@@ -138,9 +138,9 @@ def editprofile(request):
         form1 = UserForm(instance=user)
 
         form2 = ProfileForm(instance=user.profile)
-        print request.user.profile.profile_pic
+        #print request.user.profile.profile_pic
 
-        print user.last_name
+        #print user.last_name
         return render(request,'editprofile.html',{'UserForm':form1,'ProfileForm': form2})
 
 def change_password(request):
