@@ -1,0 +1,103 @@
+
+#myBtn {
+    position: relative;
+    left: 900px;
+    width: 100px;
+     margin: 20px 10px;
+    border-radius: 15px;
+    top: 18px;
+}
+
+div.relative {
+    position: relative;
+    width: 700px;
+    height: 210px;
+    border: 3px solid red;
+    left: 400px;
+}
+
+div.relative img {
+    position: relative;
+    left: 5px;
+    top: 5px;
+
+}
+
+
+div.absolute textarea{
+    position:relative;
+    top:2px;
+    box-sizing: border-box;
+    left: 90px;
+    width: 605px;
+    height: 95px;
+
+}
+
+div.absolute input[type=submit] {
+    background-color: blue;
+    color: white;
+    padding: 6px 18px;
+    margin: 4px 2px;
+    cursor: pointer;
+    position: relative;
+    left: 600px;
+    top: 1px;
+}
+
+#char_count {
+    position: relative;
+    right: 100px;
+}
+
+#body {
+    position: relative;
+    left: 400px;
+
+}
+
+#post a{
+    position: relative;
+    color: red;
+}
+
+#home {
+    position: relative;
+    left: 670px;
+    width: 450px;
+    height: 400px;
+    border: 3px solid gainsboro;
+    bottom:400px;
+
+}
+
+h4 b {
+    color: darkblue;
+}
+
+h1 {
+    text-align: center;
+}
+
+h1 b {
+    color: darkblue;
+}
+
+
+h3 {
+    text-align: center;
+}
+
+#signup-button {
+    position: relative;
+    left: 160px;
+    border-radius: 50px;
+    cursor: pointer;
+    width: 100px;
+}
+
+div.bot {
+    position: relative;
+    left: 600px;
+    top: 30px;
+}
