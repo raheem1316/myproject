@@ -1,0 +1,31 @@
+
+{% extends 'base.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title> {% block title %} Queries - Login  {% endblock %}</title>
+</head>
+<body>
+{% block body %}
+    {% if messages %}
+  <ul class="messages">
+   {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+  </ul>
+
+        {% endif %}<br>
+    <div class="container">
+
+        <h2><b> Login Form </b></h2><br>
+
+        <form method="post"  action="{% url 'login' %}">
+            {% csrf_token %}
+            {{ loginform.as_p}}<br>
+             <input type="submit" value="Submit" style="background-color: lawngreen">
+        </form>
+    </div>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title> {% block title %} All answers {% endblock %}</title>
+</head>
+
+<body>
+
+{% block body %}
+    {% if messages %}
+  <ul class="messages">
+   {% for message in messages %}
+      <li class="{{ message.tags }}" >{{ message }}</li>
+          {% endfor %}
+  </ul>
+
+        {% endif %}
+    <br><br>
+<div class="container">
+    {% for i in post %}
+
+         <div class="well" style="height:200px;width:600px;">
+      <h2>Q {{ i.id }} ::  {{ i.post }} </h2>
+{#            <a href="{% url 'editform' qus.id %}" class="btn btn-info" role="button">Edit question</a><br>#}
+      <p>uploaded by : {{ i.posted_by.email }}</p>
+      <p> posted_time: {{ i.posted_time }}</p>
+         </div>
+        <br>
+
+        <form method="post" action="{% url 'all_answers' i.id %}" enctype="multipart/form-data" >
+    {% csrf_token %}
+    {{ commentform.as_p}} <br>
+        <input type="submit" value="Submit"  style="background-color: lawngreen">
+    </form>
+{% endfor %}
+    <br>
+    {% for j in comment %}
+<p >commented by ::{{ j.commented_by.email}} </p>
+
+
+
+  <div class="well well-lg">{{ j.comment }}
+      {% if i.upload_file %}
+      <a href="{{ j.upload_file.url }}">     <img src="{{ j.upload_file.url }}" alt="pic" height="20px" width="20px">
+</a>
+  {% endif %}
+
+</div>
+        <div>
+                <a href=""> Like </a>
+              <a href="{% url 'delete_comment' j.id %}"> Delete</a>
+<p style="text-align: right"> {{ j.upload_time}}  </p>
+</div>
+
+          {% endfor %}
+    </div>
+{% endblock %}

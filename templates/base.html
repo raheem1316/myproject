@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title> {% block title %} Queries - home {% endblock %}</title>
+  <meta charset="utf-8">
+{#  <meta name="viewport" content="width=device-width, initial-scale=1">#}
+        <link rel="stylesheet" href="{% static 'css/header.css'%}">
+        <link rel="stylesheet" href="{% static 'css/base.css'%}">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="{% static 'js/addpost.js' %}"></script>
+    <script src="{% static 'js/chars_count.js' %}"></script>
+
+
+</head>
+<body>
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+
+{% block body %}
+    {% if request.user.is_authenticated %}
+          <br>
+        {% if messages %}
+  <ul class="messages">
+   {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+  </ul>
+
+        {% endif %}<br>
+        <div class="relative">
+                    {% if request.user.profile.profile_pic %}
+            <img src="{{ request.user.profile.profile_pic.url}}" alt="pic" height="60px" width="60px">
+                    {% else %}
+            <img src="{% static 'images/user_icon.jpg'%}" alt="pic" height="60px" width="60px">
+                    {% endif %}
+            <b>{{ request.user.first_name   }} {{ request.user.last_name }}</b>
+{#            <span id="char_count"></span>#}
+
+
+            <div class="absolute">
+                <form method="post" action="{% url 'addpost' %}">
+                    {% csrf_token %}
+                    <textarea name="text" maxlength="150" placeholder="Write your Query here ....." autofocus required></textarea>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+        </div>
+        <br><br>
+
+        {% for i in post %}
+
+                <div class="well" style="width: 700px" id="body">
+                    <pre> <img src="{% static 'images/user_icon.jpg'%}" alt="pic" height="30px" width="50px"> {{ i.posted_by}}                            {{ i.posted_time }}</pre>
+                    <h4>Q{{ i.id }} :: <b>{{ i.post }}</b></h4><br><br>
+                <h4 > <a href="{% url 'all_answers' i.id %}" style="color: deeppink"> see all Answers</a></h4>
+                </div>
+<br><br>
+        {% endfor %}
+
+    {% else %}
+        <div class="container">
+            <img src="{% static 'images/Queries_image.jpg'%}" alt="pic" height="200px" width="300px"><br><br>
+            <h4><b>Queries helps you to solve your queries and connect with the <br>people in your life.</b></h4><br>
+            <img src="{% static 'images/Queries_image2.jpg'%}" alt="pic" height="200px" width="500px">
+
+            <div class="relative" id="home">
+
+                <h1><b>Join Queries today.</b></h1><br><br>
+                <h3>Have an account?</h3>
+                <a href="{% url 'login' %}" class="btn btn-info" role="button" id="signup-button"> Login </a><br><br><br>
+                <h3>New to Queries?</h3>
+                <a href="{% url 'signup' %}" class="btn btn-info" role="button" id="signup-button"> Signup </a>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+{% endblock %}
+
+{% block popup %}
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="text-align:center">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title" id="myModalLabel"> Compose New Query </h3>
+            </div>
+
+            <div class="modal-body">
+                <form method="post" action="{% url 'addpost' %}">
+                      {% csrf_token %}
+
+  <textarea name="text" maxlength="150" placeholder="Write your query here ....." autofocus required></textarea>
+                    <span id="chars"></span>
+                    <input type="submit" value="Submit">
+
+</form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{#<script>#}
+{#    var maxLength = 140;#}
+{#    $('textarea').keyup(function () {#}
+{#        var length = $(this).val().length;#}
+{#        var length  = maxLength-length;#}
+{#        $('#chars').text(length);#}
+{#        $('#char_count').text(length);#}
+
+{#    });#}
+
+{#</script>#}
+</body>

@@ -1,0 +1,51 @@
+{% load static %}
+
+
+<body>
+
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li><h1> <b> Queries </b> </h1></li>
+
+        {% if request.user.is_authenticated %}
+            <button id="myBtn" type="button" class="btn btn-info">Add Query</button>
+
+              <a href="{% url 'home' %}" class="btn btn-info" role="button" id="home_button"> HOME</a>
+
+            <a href="{% url 'adskite' %}" class="btn btn-info" role="button" id="home_button"> Adskite-juice-order</a>
+            <a href="{% url 'hotel_booking' %}" class="btn btn-info" role="button" id="home_button"> Adskite-Hotel-Booking </a>
+            <a href="{% url 'course_details' %}" class="btn btn-info" role="button" id="home_button"> Adskite-course-details </a>
+            <a href="{% url 'weather_details' %}" class="btn btn-info" role="button" id="home_button"> Adskite-weather-details </a>
+
+
+            {% if request.user.profile.profile_pic %}
+                <li><img src="{{ request.user.profile.profile_pic.url}}" alt="pic" height="65px" width="60px"></li>
+            {% else %}
+
+                <li><img src="{% static 'images/user_icon.jpg'%}" alt="pic" height="60px" width="55px"></li>
+
+            {% endif %}
+
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="link" data-toggle="dropdown"> {{ request.user.first_name}}
+                     <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'editprofile' %}">Edit profile</a></li>
+                        <li><a href="{% url 'change_password' %}"> Change Password</a></li>
+                        <li><a href="{% url 'logout' %}">logout</a></li>
+                    </ul>
+            </div>
+
+        {% else %}
+
+            <li><a href="{% url 'signup' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        {% endif %}
+    </ul>
+  </div>
+
+
+
+
+</body>
+</html>
