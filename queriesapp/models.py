@@ -26,3 +26,34 @@ class Comments(models.Model):
     upload_file=models.FileField(blank=True,null=True)
 
 
+class Seller_details(models.Model):
+    name = models.CharField(max_length=100)
+    date = models.DateTimeField(auto_now_add=True)
+    number=models.CharField(max_length=10)
+    address=models.TextField(blank=True,null=True)
+    image=models.ImageField(upload_to='profile_images',blank=True,null=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('date',)
+
+class Product_details(models.Model):
+    seller = models.ForeignKey(Seller_details)
+    product_name = models.CharField(max_length=20)
+    product_quantity = models.CharField(max_length=10)
+    product_price = models.IntegerField()
+
+    def __str__(self):
+        return self.product_name
+
+
+class Orders(models.Model):
+    order_name = models.CharField(max_length=50)
+    order_quantity = models.CharField(max_length=10)
+    order_date = models.DateTimeField(auto_now_add=True)
+    seller_name = models.CharField(max_length=50)
+    buyer_name = models.CharField(max_length=50)
+    buyer_address = models.CharField(max_length=200)
+
