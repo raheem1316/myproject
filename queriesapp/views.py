@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from queriesapp.models import Product_details, Seller_details, Orders
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -21,6 +20,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from queriesapp.forms import SignupForm, LoginForm, UserForm, Profile, ProfileForm, ChangepasswordForm, CommentsForm
 from queriesapp.models import Post, Comments
+from queriesapp.models import Product_details, Seller_details, Orders
 
 
 def home(request):
