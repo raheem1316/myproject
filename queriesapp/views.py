@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from queriesapp.models import Product_details, Seller_details, Orders
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 import datetime
 import user
@@ -244,3 +248,107 @@ def weather_details(request):
 def sample(request):
     #x=str(data)
     return HttpResponse('raheem')
+
+@api_view(['POST'])
+def webhook(request):
+    #print 'ok'
+    if request.method == 'POST':
+        data = request.data
+        seller_details = Seller_details.objects.all()
+        product_details = Product_details.objects.all()
+        if data['result']['action']=='details':
+            result=data['result']
+            parameters=result['parameters']
+            #contact_details =parameters['contact-details']
+            #all=parameters['all-details']
+            #client_details=Client_details.objects.all()
+            if 'contact-details' in parameters:
+                for i in range(len(seller_details)):
+                    if parameters['contact-details']==seller_details[i].name:
+                        #print 'ok'
+                        #post1=post[i].number
+                        speech = "The contact details of %s :: %s ,%s,%s" % (seller_details[i].name,seller_details[i].address,seller_details[i].number,'https://ibb.co/n4oQhR')
+                        output = {"speech": speech, "display Text": speech, "source": "bankintrestrates"}
+                        print output
+                        return Response(output)
+            elif 'staff-details' in parameters:
+                details={}
+                for i in range(len(seller_details)):
+                    details[seller_details[i].name]=seller_details[i].number
+                speech = "All contact details of adskite %s" % (details)
+                output = {"speech": speech, "display Text": speech, "source": "bankintrestrates"}
+                return Response(output)
+
+        elif data['result']['action']=='products_information':
+            result = data['result']
+            parameters=result['parameters']
+            product_information = Product_details.objects.filter(product_name=parameters['product_details'])
+            if len(product_information) != 0:
+                x = []
+                for i in range(len(product_information)):
+
+                    listing = "[Product-name :: %s ,, Product-Quantity :: %s ,, Product-price :: %s ,,Seller-name :: %s ,, Seller-address :: %s ,,Seller-number :: %s ]--->>>>"%(product_information[i].product_name,product_information[i].product_quantity,product_information[i].product_price,product_information[i].seller.name,product_information[i].seller.address,product_information[i].seller.number)
+                    x.append(listing)
+                #print product_information[0].product_name
+                speech = "List of %s details and seller details are ::: %s"%(parameters['product_details'],x)
+                output = {"speech": speech, "display Text": speech, "source": "bankintrestrates"}
+                print speech
+                return Response(output)
+            else:
+                output = {"speech": "sorry, we don't have that product currently..we will update it soon..", "display Text":"sorry, we don't have that product currently..we will update it soon.." , "source": "bankintrestrates"}
+                return Response(output)
+
+        elif data['result']['action']=='ordering':
+            result = data['result']
+            parameters = result['parameters']
+            checking = Product_details.objects.filter(product_name=parameters['product_details'])
+            if len(checking)!= 0:
+                count = []
+
+                for i in range(len(checking)):
+                    if checking[i].seller.name == parameters['contact-details']:
+                        count.append(i)
+
+                if count:
+
+                    orders = Orders()
+                    orders.order_name = parameters['product_details']
+                    orders.order_quantity = parameters['number']
+                    orders.seller_name = parameters['contact-details']
+                    orders.buyer_name = parameters['given-name']
+                    orders.buyer_address = parameters['address']
+                    orders.save()
+
+                    speech = 'success .%s You orderd %s successfully' % (parameters['given-name'], parameters['product_details'])
+                    output = {"speech": speech, "display Text": speech, "source": "ordering"}
+                    print 'ordered'
+                    return Response(output)
+
+                else:
+                    speech = 'Error.. you entered wrong seller details , please give properly '
+                    output = {"speech": speech, "display Text": speech, "source": "ordering"}
+                    print 'no seller'
+                    return Response(output)
+
+
+            else:
+                speech = "sorry, we don't have that product currently..we will update it soon.."
+                output = {"speech": speech, "display Text": speech, "source": "ordering"}
+                print 'not ordered'
+                return Response(output)
+
+        elif data['result']['action']=='canceling':
+            result = data['result']
+            parameters = result['parameters']
+            cancel_order = Orders.objects.filter(order_name=parameters['product_details'],seller_name=parameters['contact-details'],buyer_name=parameters['given-name'])
+            if cancel_order:
+                cancel_order.delete()
+                speech = '%s Your order is cancelled successfully' % (parameters['given-name'])
+                output = {"speech": speech, "display Text": speech, "source": "ordering"}
+                print 'cancelled'
+                return Response(output)
+            else:
+                speech = 'Error.. you entered wrong details , please give properly '
+                output = {"speech": speech, "display Text": speech, "source": "ordering"}
+                print 'not cancelled'
+                return Response(output)
