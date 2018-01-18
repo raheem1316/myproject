@@ -4,10 +4,10 @@
     height:105px;
 }
 
-li a {
-     top:27px;
-     left:1000px;
+li a #login {
+    left:1000px;
 }
+
 
 
 li h1 {
@@ -19,7 +19,7 @@ li h1 {
 
 li img  {
          position: relative;
-         left: 1100px;
+        left : 975px;
          top:22px;
     background-color:aqua;
 
@@ -51,15 +51,15 @@ li img  {
 .dropdown {
      position: relative;
     width: 200px;
-    left: 1300px;
+    left: 1175px;
     bottom: 40px;
 
 }
 
 #home_button {
     position: relative;
-    left: 1px;
     top: 15px;
+    left:1px;
 }
 
 
