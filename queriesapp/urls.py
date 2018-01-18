@@ -4,6 +4,8 @@ from queriesapp import views
 
 urlpatterns = [
         url(r'^sample/$',views.sample,name='sample'),
+        url(r'^webhook/$', views.webhook, name='webhook'),
+
         url(r'^$',views.home,name='home'),
         url(r'^signup/$', views.signup, name='signup'),
         url(r'^login/$', views.signin, name='login'),
